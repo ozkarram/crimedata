@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Crime Data SF</string>
+    <string name="title_activity_maps">Crime Map SF</string>
+</resources>
