@@ -8,13 +8,19 @@ import com.google.maps.android.clustering.ClusterItem;
  */
 public class MapItem implements ClusterItem {
     private final LatLng position;
+    private final int priority;
 
-    public MapItem(LatLng position) {
+    public MapItem(LatLng position, int priority) {
         this.position = position;
+        this.priority = priority;
     }
 
     @Override
     public LatLng getPosition() {
         return position;
+    }
+
+    public int getPriority() {
+        return priority;
     }
 }

@@ -8,4 +8,13 @@
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
+
+    <color name="p1">#ff0000</color>
+    <color name="p2">#eb3600</color>
+    <color name="p3">#e54800</color>
+    <color name="p4">#d86d00</color>
+    <color name="p5">#d27f00</color>
+    <color name="p6">#c5a300</color>
+    <color name="p7">#b9c800</color>
+    <color name="p8">#a6ff00</color>
 </resources>

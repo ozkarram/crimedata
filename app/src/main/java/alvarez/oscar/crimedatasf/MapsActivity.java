@@ -3,16 +3,18 @@ package alvarez.oscar.crimedatasf;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
-import com.example.presenter.BasePresenter;
-import com.example.presenter.viewinterfaces.MapsViewInterface;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, MapsViewInterface {
+import alvarez.oscar.crimedatasf.map.MapUtil;
+import alvarez.oscar.crimedatasf.sync.SyncCrimeData;
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+    Response.Listener<String>,
+    Response.ErrorListener{
 
     private GoogleMap mMap;
 
@@ -39,31 +41,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        MapUtil mapUtil = new MapUtil(mMap, this);
+        Util.getFloatingTimestampFormat(System.currentTimeMillis()/1000);
+        //SyncCrimeData.getPoliceDepartments(this, this, this);
     }
 
     @Override
-    public void getData(String notDefinedYet) {
-
-    }
-
-    @Override
-    public void showError() {
+    public void onResponse(String response) {
 
     }
 
     @Override
-    public void showData(String data) {
+    public void onErrorResponse(VolleyError error) {
 
-    }
-
-    @Override
-    public BasePresenter getPresenter() {
-        //TODO: implement dependency injection
-        return null;
     }
 }
