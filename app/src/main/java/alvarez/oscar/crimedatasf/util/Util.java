@@ -1,4 +1,4 @@
-package alvarez.oscar.crimedatasf;
+package alvarez.oscar.crimedatasf.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
