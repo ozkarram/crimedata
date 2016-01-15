@@ -61,10 +61,10 @@ public class CustomIconRendered extends DefaultClusterRenderer<MapItem> {
 
         //modify padding for one or two digit numbers
         if (cluster.getSize() < 10) {
-            mClusterIconGenerator.setContentPadding(40, 20, 0, 0);
+            mClusterIconGenerator.setContentPadding(20, 20, 20, 20);
         }
         else {
-            mClusterIconGenerator.setContentPadding(30, 20, 0, 0);
+            mClusterIconGenerator.setContentPadding(30, 30, 30, 30);
         }
 
         Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
