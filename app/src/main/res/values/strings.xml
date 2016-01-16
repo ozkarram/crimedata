@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Crime Data SF</string>
     <string name="title_activity_maps">Crime Map SF</string>
+    <string name="action_settings">Load More Data</string>
+    <string name="snackbar_message">100 Elements Loaded</string>
 </resources>

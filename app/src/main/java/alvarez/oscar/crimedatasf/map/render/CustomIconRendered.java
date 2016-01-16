@@ -24,6 +24,7 @@ import java.util.Iterator;
 
 import alvarez.oscar.crimedatasf.R;
 import alvarez.oscar.crimedatasf.map.MapItem;
+import alvarez.oscar.crimedatasf.util.Util;
 
 /**
  * Created by Oscar Álvarez on 14/01/2016.
@@ -42,15 +43,16 @@ public class CustomIconRendered extends DefaultClusterRenderer<MapItem> {
 
     @Override
     protected void onBeforeClusterItemRendered(MapItem item, MarkerOptions markerOptions) {
-        Bitmap ob = BitmapFactory.decodeResource(context.getResources(), R.drawable.marker);
-        ob = Bitmap.createScaledBitmap(ob, ob.getWidth()/3, ob.getHeight()/3, false);
+        Bitmap ob = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_room_black_24dp);
+        ob = Bitmap.createScaledBitmap(ob, ob.getWidth(), ob.getHeight(), false);
         Bitmap obm = Bitmap.createBitmap(ob.getWidth(), ob.getHeight(), ob.getConfig());
         Canvas canvas = new Canvas(obm);
         Paint paint = new Paint();
         paint.setColorFilter(new PorterDuffColorFilter(
-            context.getResources().getColor(getColorByPriority(item.getPriority())), PorterDuff.Mode.SRC_ATOP));
+            context.getResources().getColor(Util.getColorByPriority(item.getPriority())), PorterDuff.Mode.SRC_ATOP));
         canvas.drawBitmap(ob, 0f, 0f, paint);
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(obm));
+        markerOptions.title(item.getTitle()).snippet(item.getDescription());
     }
 
     @Override
@@ -61,14 +63,14 @@ public class CustomIconRendered extends DefaultClusterRenderer<MapItem> {
 
         //modify padding for one or two digit numbers
         if (cluster.getSize() < 10) {
-            mClusterIconGenerator.setContentPadding(20, 20, 20, 20);
+            mClusterIconGenerator.setContentPadding(25, 20, 25, 20);
         }
         else {
             mClusterIconGenerator.setContentPadding(30, 30, 30, 30);
         }
 
         Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(new StringBuilder().append(cluster.getSize()).append(" incidents here").toString());
     }
 
     @Override
@@ -76,39 +78,4 @@ public class CustomIconRendered extends DefaultClusterRenderer<MapItem> {
         super.onClusterItemRendered(clusterItem, marker);
     }
 
-    private int getColorByPriority(int priority) {
-        switch (priority) {
-        case 0:
-            return R.color.p1;
-        case 1:
-            return R.color.p2;
-        case 2:
-            return R.color.p3;
-        case 3:
-            return R.color.p4;
-        case 4:
-            return R.color.p5;
-        case 5:
-            return R.color.p6;
-        case 6:
-            return R.color.p7;
-        case 7:
-            return R.color.p8;
-        default:
-            return R.color.p8;
-        }
-    }
-
-    /*private int getColorBySize(Collection<MapItem> cluster) {
-        ArrayList<Integer> counter = new ArrayList<>();
-        for (int i=0; i<8; i++) {
-            counter.add(0);
-        }
-
-        Iterator iterator = cluster.iterator();
-        while (iterator.hasNext()) {
-            MapItem item = ((MapItem) iterator.next());
-            counter.add(item.getPriority(), counter.get(item.getPriority()) + 1);
-        }
-    }*/
 }

@@ -30,8 +30,9 @@ public class MapUtil {
 
         mClusterManager.setRenderer(new CustomIconRendered(context, map, mClusterManager));
         map.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-
         map.setOnInfoWindowClickListener(mClusterManager);
+
+        map.getUiSettings().setMapToolbarEnabled(false);
 
         mClusterManager.setOnClusterItemInfoWindowClickListener(
             new ClusterManager.OnClusterItemInfoWindowClickListener<MapItem>() {
@@ -59,9 +60,14 @@ public class MapUtil {
     }
 
     public void addItemWithPriority(LatLng position, int priority, String title, String description) {
-        MapItem offsetItem = new MapItem(position, priority);
+        MapItem offsetItem = new MapItem(position, priority, title, description);
         mClusterManager.addItem(offsetItem);
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(SAN_FRANCISCO_POSITION, 11.5f));
+    }
+
+    public void clearMap() {
+        map.clear();
+        mClusterManager.clearItems();
     }
 
 }
