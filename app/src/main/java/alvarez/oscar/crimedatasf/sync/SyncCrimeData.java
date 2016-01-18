@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import alvarez.oscar.crimedatasf.models.District;
 import alvarez.oscar.crimedatasf.models.Incident;
 import alvarez.oscar.crimedatasf.util.Util;
@@ -30,7 +33,7 @@ public class SyncCrimeData {
                                         Response.ErrorListener errorListener,
                                         int requestCounter) {
         RequestQueue queue = Util.getRequestQueue(activity);
-        String url = BASE_URL + "?" + getPaginationParameters(requestCounter);
+        String url = BASE_URL + "?" + getPaginationParameters(requestCounter) + getLastMonthInfo(System.currentTimeMillis()/1000);
         queue.add(new GsonRequest<>(url, Incident[].class, null, responseListener, errorListener));
     }
 
@@ -41,12 +44,24 @@ public class SyncCrimeData {
                                                 int requestCounter) {
         RequestQueue queue = Util.getRequestQueue(activity);
         String url = BASE_URL + "?pddistrict=" + district +
-                "&" + getPaginationParameters(requestCounter);
+                "&" + getPaginationParameters(requestCounter) + getLastMonthInfo(System.currentTimeMillis()/1000);
         queue.add(new GsonRequest<>(url, Incident[].class, null, responseListener, errorListener));
     }
 
     private static String getPaginationParameters(int requestCounter) {
         return "$limit="+ITEMS_LIMIT+"&$offset="+(ITEMS_LIMIT * requestCounter);
+    }
+
+    private static String getLastMonthInfo(long currentDate) {
+        Calendar currentCalendar = Calendar.getInstance();
+        Calendar monthLessCalendar = Calendar.getInstance();
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        currentCalendar.setTimeInMillis(currentDate * 1000);
+        //currentCalendar.add(Calendar.MILLISECOND, tz.getOffset(currentCalendar.getTimeInMillis()));
+        monthLessCalendar.setTimeInMillis(currentCalendar.getTimeInMillis());
+        monthLessCalendar.add(Calendar.MONTH, -3);
+        return "&$where=date%20between%20%27"+Util.getFloatingTimestampFormat(monthLessCalendar)
+                +"%27%20and%20%27"+Util.getFloatingTimestampFormat(currentCalendar)+"%27";
     }
 
 

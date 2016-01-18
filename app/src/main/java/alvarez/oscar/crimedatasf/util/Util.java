@@ -45,13 +45,7 @@ public class Util {
         return mRequestQueue;
     }
 
-    public static String getFloatingTimestampFormat(long timestamp) {
-        Calendar calendar = Calendar.getInstance();
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        calendar.setTimeInMillis(timestamp * 1000);
-        calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
-        //TODO: Decrement months
-        //calendar.add(Calendar.MONTH, -30);
+    public static String getFloatingTimestampFormat(Calendar calendar) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = calendar.getTime();
         return sdf.format(date).replace(" ", "T");

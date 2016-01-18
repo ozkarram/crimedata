@@ -7,9 +7,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -47,30 +48,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             districts = new ArrayList<>(Arrays.asList(response));
             // 0  have most incidents
             Collections.sort(districts, Util.getDistrictComparator());
-            for (int i=0; i < response.length ; i++) {
-                menu.add(districts.get(i).getPddistrict());
-                menu.getItem(i).setIcon(
-                    Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
-                                         Util.getColorByPriority(i)));
-            }
-
+            fillMenu(response, menu);
             navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
                         mapUtil.clearMap();
                         Util.setCounterRequest(0);
-                        Util.setLastRequestFromSF(false);
-                        SyncCrimeData.getIncidentsByDistrict(context, context,
-                                                             context, item.toString(), Util.getCounterRequest());
+
+                        if (item.toString().equals(getResources().getString(R.string.all_districts))) {
+                            SyncCrimeData.getIncidentsSF(context, context,
+                                    context, Util.getCounterRequest());
+                        } else {
+                            Util.setLastRequestFromSF(false);
+                            SyncCrimeData.getIncidentsByDistrict(context, context,
+                                    context, item.toString(), Util.getCounterRequest());
+                        }
+
                         currentDistrict = item.toString();
-                        drawerLayout = ((DrawerLayout) findViewById(R.id.parent_layout));
                         drawerLayout.closeDrawers();
                         return false;
                     }
                 });
         }
     };
+
+    private void fillMenu(District[] response, Menu menu) {
+        menu.add(R.string.all_districts);
+        menu.getItem(0).setIcon(
+                Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
+                        Util.getColorByPriority(10)));
+        for (int i=0; i < response.length ; i++) {
+            menu.add(districts.get(i).getPddistrict());
+            menu.getItem(i+1).setIcon(
+                Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
+                                     Util.getColorByPriority(i)));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +104,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void initDrawer() {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        // Adding menu icon to Toolbar
+        drawerLayout = ((DrawerLayout) findViewById(R.id.parent_layout));
+
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
             supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setHomeButtonEnabled(true);
         }
     }
 
@@ -111,15 +127,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mapUtil = new MapUtil(googleMap, this);
-        //Util.getFloatingTimestampFormat(System.currentTimeMillis()/1000);
         Util.setLastRequestFromSF(true);
         SyncCrimeData.getIncidentsSF(this, this, this, Util.getCounterRequest());
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        //TODO: Set connection error view
-        Log.d("PFF", error.getMessage());
+        Toast.makeText(this, R.string.message_error, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -161,6 +175,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                      context, currentDistrict, Util.getCounterRequest());
             }
             return true;
+        }
+        if (id == android.R.id.home) {
+            drawerLayout.openDrawer(Gravity.LEFT);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -3,4 +3,6 @@
     <string name="title_activity_maps">Crime Map SF</string>
     <string name="action_settings">Load More Data</string>
     <string name="snackbar_message">100 Elements Loaded</string>
+    <string name="all_districts">ALL DISTRICTS</string>
+    <string name="message_error">No data returned from server.</string>
 </resources>
