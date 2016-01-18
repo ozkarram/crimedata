@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:id="@+id/map"
             android:layout_below="@+id/appBar"
-            tools:context=".activities.MapsActivity"
+            tools:context="com.globant.crimedatasf.activities.MapsActivity"
             android:name="com.google.android.gms.maps.SupportMapFragment"/>
     </android.support.design.widget.CoordinatorLayout>
 

@@ -1,4 +1,4 @@
-package alvarez.oscar.crimedatasf.map;
+package com.globant.crimedatasf.map;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;

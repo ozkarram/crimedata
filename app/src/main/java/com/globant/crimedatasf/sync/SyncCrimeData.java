@@ -1,16 +1,16 @@
-package alvarez.oscar.crimedatasf.sync;
+package com.globant.crimedatasf.sync;
 
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.globant.crimedatasf.models.District;
+import com.globant.crimedatasf.models.Incident;
 
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import alvarez.oscar.crimedatasf.models.District;
-import alvarez.oscar.crimedatasf.models.Incident;
-import alvarez.oscar.crimedatasf.util.Util;
+import com.globant.crimedatasf.util.Util;
 
 /**
  * Created by Oscar Álvarez on 14/01/2016.
@@ -33,7 +33,8 @@ public class SyncCrimeData {
                                         Response.ErrorListener errorListener,
                                         int requestCounter) {
         RequestQueue queue = Util.getRequestQueue(activity);
-        String url = BASE_URL + "?" + getPaginationParameters(requestCounter) + getLastMonthInfo(System.currentTimeMillis()/1000);
+        String url = BASE_URL + "?" + getPaginationParameters(requestCounter)
+                     + getLastMonthInfo(System.currentTimeMillis()/1000);
         queue.add(new GsonRequest<>(url, Incident[].class, null, responseListener, errorListener));
     }
 
@@ -44,7 +45,8 @@ public class SyncCrimeData {
                                                 int requestCounter) {
         RequestQueue queue = Util.getRequestQueue(activity);
         String url = BASE_URL + "?pddistrict=" + district +
-                "&" + getPaginationParameters(requestCounter) + getLastMonthInfo(System.currentTimeMillis()/1000);
+                "&" + getPaginationParameters(requestCounter)
+                     + getLastMonthInfo(System.currentTimeMillis()/1000);
         queue.add(new GsonRequest<>(url, Incident[].class, null, responseListener, errorListener));
     }
 

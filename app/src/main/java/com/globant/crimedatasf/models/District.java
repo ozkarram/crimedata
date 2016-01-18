@@ -1,4 +1,4 @@
-package alvarez.oscar.crimedatasf.models;
+package com.globant.crimedatasf.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

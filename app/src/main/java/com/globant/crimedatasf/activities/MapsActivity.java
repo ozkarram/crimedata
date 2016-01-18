@@ -1,4 +1,4 @@
-package alvarez.oscar.crimedatasf.activities;
+package com.globant.crimedatasf.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.globant.crimedatasf.models.District;
+import com.globant.crimedatasf.models.Incident;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,11 +26,9 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import alvarez.oscar.crimedatasf.R;
-import alvarez.oscar.crimedatasf.map.MapUtil;
-import alvarez.oscar.crimedatasf.models.District;
-import alvarez.oscar.crimedatasf.models.Incident;
-import alvarez.oscar.crimedatasf.sync.SyncCrimeData;
-import alvarez.oscar.crimedatasf.util.Util;
+import com.globant.crimedatasf.map.MapUtil;
+import com.globant.crimedatasf.sync.SyncCrimeData;
+import com.globant.crimedatasf.util.Util;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
     Response.Listener<Incident[]>,
@@ -144,9 +144,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mapUtil.addItemWithPriority(
                     new LatLng(incident.getLocation().getCoordinates().get(1),
                             incident.getLocation().getCoordinates().get(0))
-            , getPriorityByDistrict(incident.getPddistrict()), incident.getCategory(), incident.getDescript());
+            , getPriorityByDistrict(incident.getPddistrict()),
+                    incident.getCategory(), incident.getDescript());
         }
-        Snackbar.make(findViewById(R.id.parent_layout), R.string.snackbar_message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.parent_layout), R.string.snackbar_message,
+                      Snackbar.LENGTH_LONG).show();
     }
 
     private int getPriorityByDistrict(String pddistrict) {
@@ -172,8 +174,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (Util.getLastRequestFromSF()) {
                 SyncCrimeData.getIncidentsSF(this, this, this, Util.getCounterRequest());
             } else {
-                SyncCrimeData.getIncidentsByDistrict(context, context,
-                                                     context, currentDistrict, Util.getCounterRequest());
+                SyncCrimeData.getIncidentsByDistrict(context,context, context,
+                                                     currentDistrict, Util.getCounterRequest());
             }
             return true;
         }

@@ -1,9 +1,7 @@
-package alvarez.oscar.crimedatasf.models;
+package com.globant.crimedatasf.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
 
 /**
  * Created by Oscar Álvarez on 15/01/16.

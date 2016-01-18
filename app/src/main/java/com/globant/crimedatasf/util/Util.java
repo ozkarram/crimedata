@@ -1,14 +1,12 @@
-package alvarez.oscar.crimedatasf.util;
+package com.globant.crimedatasf.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -17,16 +15,14 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.globant.crimedatasf.models.District;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.TimeZone;
 
 import alvarez.oscar.crimedatasf.R;
-import alvarez.oscar.crimedatasf.models.District;
 
 /**
  * Created by Oscar Álvarez on 14/01/2016.
@@ -74,11 +70,12 @@ public class Util {
         return obm;
     }
 
-    public static Drawable getTintDrawable(Context context, @DrawableRes int src, @ColorRes int color) {
-        Drawable drawable = ContextCompat.getDrawable(context, src);//context.getResources().getDrawable(src, context.getTheme());
+    public static Drawable getTintDrawable(Context context, @DrawableRes int src,
+                                           @ColorRes int color) {
+        Drawable drawable = ContextCompat.getDrawable(context, src);
         drawable = DrawableCompat.wrap(drawable);
         DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
-        DrawableCompat.setTint(drawable, Color.RED);
+        DrawableCompat.setTint(drawable, color);
         return drawable;
     }
 
