@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.android.volley.RequestQueue;
@@ -74,8 +75,9 @@ public class Util {
     }
 
     public static Drawable getTintDrawable(Context context, @DrawableRes int src, @ColorRes int color) {
-        Drawable drawable = context.getResources().getDrawable(src, context.getTheme());
+        Drawable drawable = ContextCompat.getDrawable(context, src);//context.getResources().getDrawable(src, context.getTheme());
         drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
         DrawableCompat.setTint(drawable, Color.RED);
         return drawable;
     }

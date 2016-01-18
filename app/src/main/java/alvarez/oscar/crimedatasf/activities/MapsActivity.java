@@ -57,6 +57,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Util.setCounterRequest(0);
 
                         if (item.toString().equals(getResources().getString(R.string.all_districts))) {
+                            Util.setLastRequestFromSF(true);
                             SyncCrimeData.getIncidentsSF(context, context,
                                     context, Util.getCounterRequest());
                         } else {
