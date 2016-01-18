@@ -30,6 +30,7 @@ import alvarez.oscar.crimedatasf.R;
 public class Util {
 
     public static final int DEFAULT_COLOR = 8;
+    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static RequestQueue mRequestQueue;
     private static boolean lastRequestFromSF;
     private static int counterRequest;
@@ -43,7 +44,7 @@ public class Util {
     }
 
     public static String getFloatingTimestampFormat(Calendar calendar) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         Date date = calendar.getTime();
         return sdf.format(date).replace(" ", "T");
     }
@@ -91,8 +92,8 @@ public class Util {
         return counterRequest;
     }
 
-    public static void setCounterRequest(int counterRequest) {
-        counterRequest = counterRequest;
+    public static void setCounterRequest(int counter) {
+        counterRequest = counter;
     }
 
     public static int getColorByPriority(int priority) {

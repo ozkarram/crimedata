@@ -14,8 +14,11 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.globant.crimedatasf.map.MapUtil;
 import com.globant.crimedatasf.models.District;
 import com.globant.crimedatasf.models.Incident;
+import com.globant.crimedatasf.sync.SyncCrimeData;
+import com.globant.crimedatasf.util.Util;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -26,13 +29,10 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import alvarez.oscar.crimedatasf.R;
-import com.globant.crimedatasf.map.MapUtil;
-import com.globant.crimedatasf.sync.SyncCrimeData;
-import com.globant.crimedatasf.util.Util;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
     Response.Listener<Incident[]>,
-    Response.ErrorListener{
+    Response.ErrorListener {
 
     private MapUtil mapUtil;
     private NavigationView navigationView;
@@ -56,14 +56,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         mapUtil.clearMap();
                         Util.setCounterRequest(0);
 
-                        if (item.toString().equals(getResources().getString(R.string.all_districts))) {
+                        if (item.toString()
+                            .equals(getResources().getString(R.string.all_districts))) {
                             Util.setLastRequestFromSF(true);
                             SyncCrimeData.getIncidentsSF(context, context,
-                                    context, Util.getCounterRequest());
+                                                         context, Util.getCounterRequest());
                         } else {
                             Util.setLastRequestFromSF(false);
                             SyncCrimeData.getIncidentsByDistrict(context, context,
-                                    context, item.toString(), Util.getCounterRequest());
+                                                                 context, item.toString(),
+                                                                 Util.getCounterRequest());
                         }
 
                         currentDistrict = item.toString();
@@ -77,11 +79,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void fillMenu(District[] response, Menu menu) {
         menu.add(R.string.all_districts);
         menu.getItem(0).setIcon(
-                Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
-                        Util.getColorByPriority(10)));
-        for (int i=0; i < response.length ; i++) {
+            Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
+                                 Util.getColorByPriority(10)));
+        for (int i = 0; i < response.length; i++) {
             menu.add(districts.get(i).getPddistrict());
-            menu.getItem(i+1).setIcon(
+            menu.getItem(i + 1).setIcon(
                 Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
                                      Util.getColorByPriority(i)));
         }
@@ -95,9 +97,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Util.setCounterRequest(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+            .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         initDrawer();
         SyncCrimeData.getPoliceDepartments(this, districtListener, this);
@@ -117,13 +118,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+     * Manipulates the map once available. This callback is triggered when the map is ready to be
+     * used. This is where we can add markers or lines, add listeners or move the camera. In this
+     * case, we just add a marker near Sydney, Australia. If Google Play services is not installed
+     * on the device, the user will be prompted to install it inside the SupportMapFragment. This
+     * method will only be triggered once the user has installed Google Play services and returned
+     * to the app.
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -139,20 +139,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onResponse(Incident[] response) {
-        for (int i = 0; i < response.length ; i++) {
+        for (int i = 0; i < response.length; i++) {
             Incident incident = response[i];
             mapUtil.addItemWithPriority(
-                    new LatLng(incident.getLocation().getCoordinates().get(1),
-                            incident.getLocation().getCoordinates().get(0))
-            , getPriorityByDistrict(incident.getPddistrict()),
-                    incident.getCategory(), incident.getDescript());
+                new LatLng(incident.getLocation().getCoordinates().get(1),
+                           incident.getLocation().getCoordinates().get(0))
+                , getPriorityByDistrict(incident.getPddistrict()),
+                incident.getCategory(), incident.getDescript());
         }
         Snackbar.make(findViewById(R.id.parent_layout), R.string.snackbar_message,
                       Snackbar.LENGTH_LONG).show();
     }
 
     private int getPriorityByDistrict(String pddistrict) {
-        for (int i = 0 ; i < districts.size(); i++) {
+        for (int i = 0; i < districts.size(); i++) {
             if (districts.get(i).getPddistrict().equals(pddistrict)) {
                 return i;
             }
@@ -174,7 +174,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (Util.getLastRequestFromSF()) {
                 SyncCrimeData.getIncidentsSF(this, this, this, Util.getCounterRequest());
             } else {
-                SyncCrimeData.getIncidentsByDistrict(context,context, context,
+                SyncCrimeData.getIncidentsByDistrict(context, context, context,
                                                      currentDistrict, Util.getCounterRequest());
             }
             return true;

@@ -49,7 +49,8 @@ public class MapUtil {
             });
     }
 
-    public void addItemWithPriority(LatLng position, int priority, String title, String description) {
+    public void addItemWithPriority(LatLng position, int priority, String title,
+                                    String description) {
         MapItem offsetItem = new MapItem(position, priority, title, description);
         mClusterManager.addItem(offsetItem);
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(SAN_FRANCISCO_POSITION, 11.5f));

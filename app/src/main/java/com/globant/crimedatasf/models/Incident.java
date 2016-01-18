@@ -49,16 +49,13 @@ public class Incident {
     private String y;
 
     /**
-     *
-     * @return
-     *     The address
+     * @return The address
      */
     public String getAddress() {
         return address;
     }
 
     /**
-     *
      * @param address
      *     The address
      */
@@ -67,16 +64,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The category
+     * @return The category
      */
     public String getCategory() {
         return category;
     }
 
     /**
-     *
      * @param category
      *     The category
      */
@@ -85,16 +79,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The date
+     * @return The date
      */
     public String getDate() {
         return date;
     }
 
     /**
-     *
      * @param date
      *     The date
      */
@@ -103,16 +94,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The dayofweek
+     * @return The dayofweek
      */
     public String getDayofweek() {
         return dayofweek;
     }
 
     /**
-     *
      * @param dayofweek
      *     The dayofweek
      */
@@ -121,16 +109,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The descript
+     * @return The descript
      */
     public String getDescript() {
         return descript;
     }
 
     /**
-     *
      * @param descript
      *     The descript
      */
@@ -139,16 +124,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The incidntnum
+     * @return The incidntnum
      */
     public String getIncidntnum() {
         return incidntnum;
     }
 
     /**
-     *
      * @param incidntnum
      *     The incidntnum
      */
@@ -157,16 +139,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The location
+     * @return The location
      */
     public LocationModel getLocation() {
         return location;
     }
 
     /**
-     *
      * @param location
      *     The location
      */
@@ -175,16 +154,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The pddistrict
+     * @return The pddistrict
      */
     public String getPddistrict() {
         return pddistrict;
     }
 
     /**
-     *
      * @param pddistrict
      *     The pddistrict
      */
@@ -193,16 +169,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The pdid
+     * @return The pdid
      */
     public String getPdid() {
         return pdid;
     }
 
     /**
-     *
      * @param pdid
      *     The pdid
      */
@@ -211,16 +184,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The resolution
+     * @return The resolution
      */
     public String getResolution() {
         return resolution;
     }
 
     /**
-     *
      * @param resolution
      *     The resolution
      */
@@ -229,16 +199,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The time
+     * @return The time
      */
     public String getTime() {
         return time;
     }
 
     /**
-     *
      * @param time
      *     The time
      */
@@ -247,16 +214,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The x
+     * @return The x
      */
     public String getX() {
         return x;
     }
 
     /**
-     *
      * @param x
      *     The x
      */
@@ -265,16 +229,13 @@ public class Incident {
     }
 
     /**
-     *
-     * @return
-     *     The y
+     * @return The y
      */
     public String getY() {
         return y;
     }
 
     /**
-     *
      * @param y
      *     The y
      */

@@ -19,16 +19,13 @@ public class LocationModel {
     private List<Double> coordinates = new ArrayList<Double>();
 
     /**
-     *
-     * @return
-     *     The type
+     * @return The type
      */
     public String getType() {
         return type;
     }
 
     /**
-     *
      * @param type
      *     The type
      */
@@ -37,16 +34,13 @@ public class LocationModel {
     }
 
     /**
-     *
-     * @return
-     *     The coordinates
+     * @return The coordinates
      */
     public List<Double> getCoordinates() {
         return coordinates;
     }
 
     /**
-     *
      * @param coordinates
      *     The coordinates
      */

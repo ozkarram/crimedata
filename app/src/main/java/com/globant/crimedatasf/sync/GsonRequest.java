@@ -24,9 +24,12 @@ public class GsonRequest<T> extends Request<T> {
     /**
      * Make a GET request and return a parsed object from JSON.
      *
-     * @param url URL of the request to make
-     * @param clazz Relevant class object, for Gson's reflection
-     * @param headers Map of request headers
+     * @param url
+     *     URL of the request to make
+     * @param clazz
+     *     Relevant class object, for Gson's reflection
+     * @param headers
+     *     Map of request headers
      */
     public GsonRequest(String url, Class<T> clazz, Map<String, String> headers,
                        Response.Listener<T> listener, Response.ErrorListener errorListener) {
@@ -38,7 +41,9 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        return headers != null ? headers : super.getHeaders();
+        return headers != null
+               ? headers
+               : super.getHeaders();
     }
 
     @Override
@@ -50,11 +55,11 @@ public class GsonRequest<T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(
-                    response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
+                response.data,
+                HttpHeaderParser.parseCharset(response.headers));
             return Response.success(
-                    gson.fromJson(json, clazz),
-                    HttpHeaderParser.parseCacheHeaders(response));
+                gson.fromJson(json, clazz),
+                HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JsonSyntaxException e) {

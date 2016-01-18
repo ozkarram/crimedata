@@ -16,36 +16,30 @@ public class District {
     private String pddistrict;
 
     /**
-     *
-     * @return
-     * The COUNT
+     * @return The COUNT
      */
     public String getCount() {
         return COUNT;
     }
 
     /**
-     *
      * @param COUNT
-     * The COUNT
+     *     The COUNT
      */
     public void setCount(String COUNT) {
         this.COUNT = COUNT;
     }
 
     /**
-     *
-     * @return
-     * The pddistrict
+     * @return The pddistrict
      */
     public String getPddistrict() {
         return pddistrict;
     }
 
     /**
-     *
      * @param pddistrict
-     * The pddistrict
+     *     The pddistrict
      */
     public void setPddistrict(String pddistrict) {
         this.pddistrict = pddistrict;
