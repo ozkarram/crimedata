@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -72,11 +73,11 @@ public class Util {
     }
 
     public static Drawable getTintDrawable(Context context, @DrawableRes int src,
-                                           @ColorRes int color) {
-        Drawable drawable = ContextCompat.getDrawable(context, src);
-        drawable = DrawableCompat.wrap(drawable);
-        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
-        DrawableCompat.setTint(drawable, color);
+                                           int color) {
+        Drawable drawable = context.getDrawable(src);
+        drawable = drawable.mutate();
+        drawable.setColorFilter(new PorterDuffColorFilter(context.getResources()
+                .getColor(color), PorterDuff.Mode.SRC_ATOP));
         return drawable;
     }
 
@@ -114,6 +115,8 @@ public class Util {
             return R.color.p7;
         case 7:
             return R.color.p8;
+            case 10:
+                return R.color.primary_text;
         default:
             return R.color.p8;
         }
