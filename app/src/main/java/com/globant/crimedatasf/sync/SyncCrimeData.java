@@ -2,6 +2,7 @@ package com.globant.crimedatasf.sync;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.globant.crimedatasf.models.District;
@@ -36,7 +37,8 @@ public class SyncCrimeData {
                                             Response.ErrorListener errorListener) {
         RequestQueue queue = Util.getRequestQueue(activity);
         String url = BASE_URL + QUERY_DISTRICTS;
-        queue.add(new GsonRequest<>(url, District[].class, null, responseListener, errorListener));
+        queue.add(new GsonRequest<>(url, District[].class, null, responseListener, errorListener,
+                                    Request.Priority.IMMEDIATE));
     }
 
     public static void getIncidentsSF(final AppCompatActivity activity,
@@ -46,7 +48,8 @@ public class SyncCrimeData {
         RequestQueue queue = Util.getRequestQueue(activity);
         String url = BASE_URL + SEPARATOR + getPaginationParameters(requestCounter)
                      + getLastMonthInfo(System.currentTimeMillis() / 1000);
-        queue.add(new GsonRequest<>(url, Incident[].class, null, responseListener, errorListener));
+        queue.add(new GsonRequest<>(url, Incident[].class, null, responseListener, errorListener,
+                                    Request.Priority.NORMAL));
     }
 
     public static void getIncidentsByDistrict(final AppCompatActivity activity,
@@ -58,7 +61,8 @@ public class SyncCrimeData {
         String url = BASE_URL + PDDISTRICT + district +
                      AMPERSAND + getPaginationParameters(requestCounter)
                      + getLastMonthInfo(System.currentTimeMillis() / 1000);
-        queue.add(new GsonRequest<>(url, Incident[].class, null, responseListener, errorListener));
+        queue.add(new GsonRequest<>(url, Incident[].class, null, responseListener, errorListener,
+                                    Request.Priority.NORMAL));
     }
 
     private static String getPaginationParameters(int requestCounter) {

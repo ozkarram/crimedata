@@ -20,6 +20,7 @@ public class GsonRequest<T> extends Request<T> {
     private final Class<T> clazz;
     private final Map<String, String> headers;
     private final Response.Listener<T> listener;
+    private Priority priority;
 
     /**
      * Make a GET request and return a parsed object from JSON.
@@ -32,11 +33,13 @@ public class GsonRequest<T> extends Request<T> {
      *     Map of request headers
      */
     public GsonRequest(String url, Class<T> clazz, Map<String, String> headers,
-                       Response.Listener<T> listener, Response.ErrorListener errorListener) {
+                       Response.Listener<T> listener, Response.ErrorListener errorListener,
+                       Priority priority) {
         super(Method.GET, url, errorListener);
         this.clazz = clazz;
         this.headers = headers;
         this.listener = listener;
+        this.priority = priority;
     }
 
     @Override
@@ -65,5 +68,10 @@ public class GsonRequest<T> extends Request<T> {
         } catch (JsonSyntaxException e) {
             return Response.error(new ParseError(e));
         }
+    }
+
+    @Override
+    public Priority getPriority() {
+        return priority;
     }
 }

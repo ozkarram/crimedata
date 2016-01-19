@@ -4,15 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -77,7 +74,8 @@ public class Util {
         Drawable drawable = context.getDrawable(src);
         drawable = drawable.mutate();
         drawable.setColorFilter(new PorterDuffColorFilter(context.getResources()
-                .getColor(color), PorterDuff.Mode.SRC_ATOP));
+                                                              .getColor(color),
+                                                          PorterDuff.Mode.SRC_ATOP));
         return drawable;
     }
 
@@ -115,8 +113,8 @@ public class Util {
             return R.color.p7;
         case 7:
             return R.color.p8;
-            case 10:
-                return R.color.primary_text;
+        case 10:
+            return R.color.primary_text;
         default:
             return R.color.p8;
         }

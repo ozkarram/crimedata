@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Arrays;
+
 import alvarez.oscar.crimedatasf.R;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -39,6 +40,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Bundle savedInstance;
     private MapsActivity context;
     private String currentDistrict;
+    private ActionBar supportActionBar;
 
     Response.Listener<District[]> districtListener = new Response.Listener<District[]>() {
         @Override
@@ -52,7 +54,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
-                        item.setChecked(true);
+                        supportActionBar.setTitle(         getResources().getString(R.string.app_name)
+                                                  + ": " + item.getTitle());
                         mapUtil.clearMap();
                         Util.setCounterRequest(0);
 
@@ -77,13 +80,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     };
 
     private void fillMenu(District[] response, Menu menu) {
-        //menu.setGroupCheckable(0, true, true);
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, R.string.all_districts);
+        menu.add(R.string.all_districts);
         menu.getItem(0).setIcon(
             Util.getTintDrawable(context, R.drawable.ic_lens_black_24dp,
                                  Util.getColorByPriority(10)));
         for (int i = 0; i < response.length; i++) {
-            menu.add(Menu.NONE, i, i, districts[i].getPddistrict());
+            menu.add(districts[i].getPddistrict());
             menu.getItem(i + 1).setIcon(
                 Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
                                      Util.getColorByPriority(i)));
@@ -106,7 +108,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (savedInstanceState != null && savedInstanceState.containsKey("districts")) {
             District[] arr = ((District[]) savedInstanceState.getParcelableArray("districts"));
             districtListener.onResponse(arr);
-            Toast.makeText(this, "USO DE SAVED INSTANCE", Toast.LENGTH_SHORT).show();
         } else {
             SyncCrimeData.getPoliceDepartments(this, districtListener, this);
         }
@@ -125,11 +126,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = ((DrawerLayout) findViewById(R.id.parent_layout));
 
-        ActionBar supportActionBar = getSupportActionBar();
+        supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setHomeButtonEnabled(true);
+
         }
     }
 
