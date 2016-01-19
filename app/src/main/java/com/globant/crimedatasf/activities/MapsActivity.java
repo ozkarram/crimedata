@@ -1,5 +1,6 @@
 package com.globant.crimedatasf.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -7,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,10 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-
 import alvarez.oscar.crimedatasf.R;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -37,7 +36,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MapUtil mapUtil;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private ArrayList<District> districts;
+    private District[] districts;
+    private Incident[] incidents;
+    private Bundle savedInstance;
     private MapsActivity context;
     private String currentDistrict;
 
@@ -45,9 +46,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         public void onResponse(District[] response) {
             Menu menu = navigationView.getMenu();
-            districts = new ArrayList<>(Arrays.asList(response));
+            districts = response;
             // 0  have most incidents
-            Collections.sort(districts, Util.getDistrictComparator());
+            Arrays.sort(districts, Util.getDistrictComparator());
             fillMenu(response, menu);
             navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -82,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
                                  Util.getColorByPriority(10)));
         for (int i = 0; i < response.length; i++) {
-            menu.add(districts.get(i).getPddistrict());
+            menu.add(districts[i].getPddistrict());
             menu.getItem(i + 1).setIcon(
                 Util.getTintDrawable(context, R.drawable.ic_room_black_24dp,
                                      Util.getColorByPriority(i)));
@@ -92,6 +93,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.savedInstance = savedInstanceState;
         setContentView(R.layout.activity_maps);
         context = this;
         Util.setCounterRequest(0);
@@ -101,7 +103,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         initDrawer();
-        SyncCrimeData.getPoliceDepartments(this, districtListener, this);
+        if (savedInstanceState != null && savedInstanceState.containsKey("districts")) {
+            District[] arr = ((District[]) savedInstanceState.getParcelableArray("districts"));
+            districtListener.onResponse(arr);
+            Toast.makeText(this, "USO DE SAVED INSTANCE", Toast.LENGTH_SHORT).show();
+        } else {
+            SyncCrimeData.getPoliceDepartments(this, districtListener, this);
+        }
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArray("incidents", incidents);
+        outState.putParcelableArray("districts", districts);
+
+        super.onSaveInstanceState(outState);
     }
 
     private void initDrawer() {
@@ -129,7 +146,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mapUtil = new MapUtil(googleMap, this);
         Util.setLastRequestFromSF(true);
-        SyncCrimeData.getIncidentsSF(this, this, this, Util.getCounterRequest());
+        if (savedInstance != null && savedInstance.containsKey("incidents")) {
+            Incident[] arr = ((Incident[]) savedInstance.getParcelableArray("incidents"));
+            onResponse(arr);
+        } else {
+            SyncCrimeData.getIncidentsSF(this, this, this, Util.getCounterRequest());
+        }
     }
 
     @Override
@@ -139,21 +161,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onResponse(Incident[] response) {
+        incidents = response;
         for (int i = 0; i < response.length; i++) {
             Incident incident = response[i];
+            int color = context.getResources().getColor(Util.getColorByPriority(getPriorityByDistrict(incident.getPddistrict())));
             mapUtil.addItemWithPriority(
                 new LatLng(incident.getLocation().getCoordinates().get(1),
                            incident.getLocation().getCoordinates().get(0))
                 , getPriorityByDistrict(incident.getPddistrict()),
-                incident.getCategory(), incident.getDescript());
+                incident.getCategory(), incident.getDescript(), color);
         }
         Snackbar.make(findViewById(R.id.parent_layout), R.string.snackbar_message,
                       Snackbar.LENGTH_LONG).show();
     }
 
     private int getPriorityByDistrict(String pddistrict) {
-        for (int i = 0; i < districts.size(); i++) {
-            if (districts.get(i).getPddistrict().equals(pddistrict)) {
+        for (int i = 0; i < districts.length; i++) {
+            if (districts[i].getPddistrict().equals(pddistrict)) {
                 return i;
             }
         }

@@ -1,12 +1,15 @@
 package com.globant.crimedatasf.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Oscar Álvarez on 15/01/16.
  */
-public class Incident {
+public class Incident implements Parcelable{
 
     @SerializedName("address")
     @Expose
@@ -243,4 +246,52 @@ public class Incident {
         this.y = y;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(address);
+        dest.writeString(category);
+        dest.writeString(date);
+        dest.writeString(dayofweek);
+        dest.writeString(descript);
+        dest.writeString(incidntnum);
+        dest.writeParcelable(location, 0);
+        dest.writeString(pddistrict);
+        dest.writeString(pdid);
+        dest.writeString(resolution);
+        dest.writeString(time);
+        dest.writeString(x);
+        dest.writeString(y);
+    }
+
+    public static final Parcelable.Creator<Incident> CREATOR
+        = new Parcelable.Creator<Incident>() {
+        public Incident createFromParcel(Parcel in) {
+            return new Incident(in);
+        }
+
+        public Incident[] newArray(int size) {
+            return new Incident[size];
+        }
+    };
+
+    private Incident(Parcel in) {
+        address = in.readString();
+        category = in.readString();
+        date = in.readString();
+        dayofweek = in.readString();
+        descript = in.readString();
+        incidntnum = in.readString();
+        location = in.readParcelable(LocationModel.class.getClassLoader());
+        pddistrict = in.readString();
+        pdid = in.readString();
+        resolution = in.readString();
+        time = in.readString();
+        x = in.readString();
+        y = in.readString();
+    }
 }
